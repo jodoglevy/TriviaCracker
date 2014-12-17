@@ -1,0 +1,35 @@
+{
+    "name":"Trivia Cracker",
+    "version":"1.0",
+    "description":"Hack Trivia Crack (https://apps.facebook.com/triviacrack/). Can't figure out a Trivia Crack answer? Let us find the answer for you.",
+    "manifest_version": 2,
+    "incognito": "spanning",
+    "icons": { 
+        "16": "images/icons/icon16.png",
+        "48": "images/icons/icon48.png",
+        "128": "images/icons/icon.png"
+    },
+    "content_scripts":[{
+        "all_frames": true,
+        "matches":[
+            "https://*.preguntados.com/*",
+            "http://*.preguntados.com/*"
+        ],
+        "js": ["jquery-1.11.1.min.js", "TriviaCrack.js", "triviaCracker.js"],
+        "run_at":"document_start"
+    }],
+    "web_accessible_resources": [
+        "images/app/*"
+    ],
+    "page_action":{
+        "default_title": "Trivia Cracker"
+    },
+    "permissions": [
+      "webRequest",
+      "webRequestBlocking",
+      "*://*.lfstmedia.com/*"
+    ],
+    "background": {
+        "scripts": ["background.js"]
+    }
+}
