@@ -94,7 +94,7 @@ function clickCorrectAnswer(correctAnswer) {
 
     var answers = $(".answers-container").find("button");
     answers.each(function(index, answer) {
-        var answerText = $(answer).find("span").first().text();
+        var answerText = $(answer).find("p").first().text();
 
         if(answerText.toLowerCase() == correctAnswer.toLowerCase()) {
             $(answer).trigger("click");
