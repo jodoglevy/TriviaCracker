@@ -32,29 +32,46 @@ function setUp() {
 
 }
 
-function findAnswer() {
-    var url = (window.location.href);
-    var urlParts = url.split("#game/");
-    
-    if(urlParts.length == 2) {
-        // we are in a game, look for an answer
-
-        var gameID = urlParts[1];
+function verifyLicense(callback) {
+    chrome.runtime.sendMessage({"verifyLicense": true}, function(licenseStatus) {
         
-        TriviaCrack.GetGameData(gameID, userID, new Date().getTime(), function(err, response) {
-            var response = response.response;
+        console.log("Trivia Cracker license: " + licenseStatus);
 
-            if(response.type == "DUEL_GAME") {
-                // game type is a many-user challenge
-                findManyUserChallengeAnswer(response);
-            }
-            else {
-                // game type is either regular, playing for a crown, or a
-                // two person challenge
-                findRegularAnswer(response);
-            }
-        });
-    }
+        if(licenseStatus == "FULL" || licenseStatus == "FREE_TRIAL") {
+            callback(licenseStatus);
+        }
+        else {
+            alert('Your Trivia Cracker free trial has expired. Please buy the full version to continue using Trivia Cracker.');
+            window.open("https://chrome.google.com/webstore/detail/trivia-cracker/mpaoffaaolfohpleklnbmhbndphfgeef");
+        }
+    });
+}
+
+function findAnswer() {
+    verifyLicense(function() {
+        var url = (window.location.href);
+        var urlParts = url.split("#game/");
+        
+        if(urlParts.length == 2) {
+            // we are in a game, look for an answer
+
+            var gameID = urlParts[1];
+            
+            TriviaCrack.GetGameData(gameID, userID, new Date().getTime(), function(err, response) {
+                var response = response.response;
+
+                if(response.type == "DUEL_GAME") {
+                    // game type is a many-user challenge
+                    findManyUserChallengeAnswer(response);
+                }
+                else {
+                    // game type is either regular, playing for a crown, or a
+                    // two person challenge
+                    findRegularAnswer(response);
+                }
+            });
+        }
+    });
 }
 
 function findRegularAnswer(response) {

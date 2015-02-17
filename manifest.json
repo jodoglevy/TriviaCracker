@@ -1,6 +1,6 @@
 {
     "name":"Trivia Cracker",
-    "version":"1.3",
+    "version":"1.4",
     "description":"Hack Trivia Crack. Don't know the answer to a Trivia Crack question? Use Trivia Cracker to have the correct answer selected for you.",
     "manifest_version": 2,
     "incognito": "spanning",
@@ -12,8 +12,7 @@
     "content_scripts":[{
         "all_frames": true,
         "matches":[
-            "https://*.preguntados.com/*",
-            "http://*.preguntados.com/*"
+            "*://*.preguntados.com/*"
         ],
         "js": ["jquery-1.11.1.min.js", "TriviaCrack.js", "triviaCracker.js"],
         "run_at":"document_start"
@@ -23,5 +22,20 @@
     ],
     "page_action":{
         "default_title": "Trivia Cracker"
+    },
+    "permissions": [
+        "identity",
+        "https://www.googleapis.com/",
+        "*://*.preguntados.com/*"
+    ],
+    
+    "oauth2": {
+        "client_id": "873561317436-jd9cd6f06td4h10ciedj59bji7j820r5.apps.googleusercontent.com",
+        "scopes": [
+            "https://www.googleapis.com/auth/chromewebstore.readonly"
+        ]
+    },
+    "background": {
+        "scripts": ["jquery-1.11.1.min.js", "background.js"]
     }
 }
