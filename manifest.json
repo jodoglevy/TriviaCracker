@@ -1,6 +1,6 @@
 {
     "name":"Trivia Cracker",
-    "version":"1.4",
+    "version":"1.5",
     "description":"Hack Trivia Crack. Don't know the answer to a Trivia Crack question? Use Trivia Cracker to have the correct answer selected for you.",
     "manifest_version": 2,
     "incognito": "spanning",

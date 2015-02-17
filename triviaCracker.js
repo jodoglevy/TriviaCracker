@@ -1,4 +1,6 @@
 var userID = null;
+var cachedLicenseStatus = null;
+var cachedLicenseCachedUntilTime = new Date(0);
 
 function setUp() {
     
@@ -32,19 +34,49 @@ function setUp() {
 
 }
 
-function verifyLicense(callback) {
-    chrome.runtime.sendMessage({"verifyLicense": true}, function(licenseStatus) {
-        
-        console.log("Trivia Cracker license: " + licenseStatus);
+function tellUserToPurchase() {
+    alert('Your Trivia Cracker free trial has expired. Please buy the full version to continue using Trivia Cracker.');
+    window.open("https://chrome.google.com/webstore/detail/trivia-cracker/mpaoffaaolfohpleklnbmhbndphfgeef");
+}
 
-        if(licenseStatus == "FULL" || licenseStatus == "FREE_TRIAL") {
-            callback(licenseStatus);
+function verifyLicense(callback) {
+    var now = new Date();
+    var timeDiff = cachedLicenseCachedUntilTime - now;
+
+    if(cachedLicenseStatus && timeDiff > 0) {
+        // use cached license status
+        console.log("Trivia Cracker cached license: " + cachedLicenseStatus);
+        console.log("Cached until: " + cachedLicenseCachedUntilTime);
+
+        if(cachedLicenseStatus == "FULL" || cachedLicenseStatus == "FREE_TRIAL") {
+            callback(cachedLicenseStatus);
         }
         else {
-            alert('Your Trivia Cracker free trial has expired. Please buy the full version to continue using Trivia Cracker.');
-            window.open("https://chrome.google.com/webstore/detail/trivia-cracker/mpaoffaaolfohpleklnbmhbndphfgeef");
+            tellUserToPurchase();
         }
-    });
+    }
+    else {
+        // check license status and cache it
+
+        chrome.runtime.sendMessage({"verifyLicense": true}, function(licenseStatus) {
+            
+            console.log("Trivia Cracker license: " + licenseStatus);
+            cachedLicenseStatus = licenseStatus;
+
+            if(licenseStatus == "FULL" || licenseStatus == "FREE_TRIAL") {
+                // cache for 30 minutes
+                cachedLicenseCachedUntilTime = new Date(now.getTime() + 1000*60*30);
+                
+                callback(licenseStatus);
+            }
+            else {
+                // cache for 1 minute
+                cachedLicenseCachedUntilTime = new Date(now.getTime() + 1000*60*1);
+
+                tellUserToPurchase();
+            }
+        });
+    }
 }
 
 function findAnswer() {
