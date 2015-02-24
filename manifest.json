@@ -1,6 +1,6 @@
 {
     "name":"Trivia Cracker",
-    "version":"1.5",
+    "version":"1.6",
     "description":"Hack Trivia Crack. Don't know the answer to a Trivia Crack question? Use Trivia Cracker to have the correct answer selected for you.",
     "manifest_version": 2,
     "incognito": "spanning",
@@ -28,7 +28,6 @@
         "https://www.googleapis.com/",
         "*://*.preguntados.com/*"
     ],
-    
     "oauth2": {
         "client_id": "873561317436-jd9cd6f06td4h10ciedj59bji7j820r5.apps.googleusercontent.com",
         "scopes": [

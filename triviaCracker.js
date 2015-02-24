@@ -61,19 +61,27 @@ function verifyLicense(callback) {
         chrome.runtime.sendMessage({"verifyLicense": true}, function(licenseStatus) {
             
             console.log("Trivia Cracker license: " + licenseStatus);
-            cachedLicenseStatus = licenseStatus;
+            
+            if(licenseStatus) {
+                cachedLicenseStatus = licenseStatus;
 
-            if(licenseStatus == "FULL" || licenseStatus == "FREE_TRIAL") {
-                // cache for 30 minutes
-                cachedLicenseCachedUntilTime = new Date(now.getTime() + 1000*60*30);
-                
-                callback(licenseStatus);
+                if(licenseStatus == "FULL" || licenseStatus == "FREE_TRIAL") {
+                    // cache for 30 minutes
+                    cachedLicenseCachedUntilTime = new Date(now.getTime() + 1000*60*30);
+                    
+                    callback(licenseStatus);
+                }
+                else {
+                    // cache for 1 minute
+                    cachedLicenseCachedUntilTime = new Date(now.getTime() + 1000*60*1);
+
+                    tellUserToPurchase();
+                }
             }
             else {
-                // cache for 1 minute
-                cachedLicenseCachedUntilTime = new Date(now.getTime() + 1000*60*1);
-
-                tellUserToPurchase();
+                // hit an error, couldn't get license status
+                alert("We were unable to validate your Trivia Cracker license. Opening troubleshooting page.");
+                window.open("https://apptastic.uservoice.com/knowledgebase/articles/504907-why-does-trivia-cracker-tell-me-we-were-unable-to");
             }
         });
     }

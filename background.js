@@ -2,6 +2,12 @@ const FREE_TRIAL_PERIOD_DAYS = 2;
 
 function verifyLicense(callback) {
     chrome.identity.getAuthToken({ 'interactive': true }, function(token) {
+        
+        if(!token) {
+            console.log("Error: could not get token");
+            return callback(null);
+        }
+
         $.ajax({
             url: "https://www.googleapis.com/chromewebstore/v1.1/userlicenses/mpaoffaaolfohpleklnbmhbndphfgeef",
             headers: {
