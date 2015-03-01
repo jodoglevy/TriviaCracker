@@ -41,10 +41,21 @@ function verifyLicense(callback) {
     });   
 }
 
+function sendGift(targetFacebookId, giftType, callback) {
+    TriviaCrackAPI.CreateUser(function(err, response) {
+        var fromTriviaCrackId = response.id;
+        TriviaCrackAPI.sendGift(fromTriviaCrackId, targetFacebookId, giftType, callback);
+    });
+}
+
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         if(request.verifyLicense) {
             verifyLicense(sendResponse);
+            return true;
+        }
+        else if(request.sendGift) {
+            sendGift(request.targetFacebookId, request.giftType, sendResponse);
             return true;
         }
     }

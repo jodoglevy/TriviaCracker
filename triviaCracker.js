@@ -1,4 +1,6 @@
 var userID = null;
+var facebookID = null;
+
 var cachedLicenseStatus = null;
 var cachedLicenseCachedUntilTime = new Date(0);
 
@@ -10,22 +12,43 @@ function setUp() {
         var existingHackButton = $("." + hackButtonClass);
         var hackButtonContainer = $(".btns-menu.pull-right");
         var achievementButton = $(".btn.btn-primary.achievements");
+        var volumeButton = $(".btn.btn-primary.toggle-sounds");
 
         if(existingHackButton.length == 0 && hackButtonContainer.length != 0) {
             var hackButton = $("<button />");
-            var hackImage = $("<img title='Run Trivia Cracker!' style='width: 30px' />");
-
-            var hackButtonImage = 'images/app/triviaCrackerButton.png';
+            var hackImage = $("<img title='Select the correct answer using Trivia Cracker!' style='width: 30px' />");
+            var hackButtonImage = 'images/app/triviaCrackerAnswerButton.png';
             hackImage.attr("src", chrome.extension.getURL(hackButtonImage));
-
             hackButton.append(hackImage);
             hackButton.addClass(hackButtonClass);
             hackButton.click(findAnswer);
 
-            hackButtonContainer.append(hackButton);
-            achievementButton.hide();
+            var giveGiftButton = $("<button />");
+            var giveGiftImage = $("<img title='Get another life or spin using Trivia Cracker!' style='width: 30px' />");
+            var giveGiftButtonImage = 'images/app/triviaCrackerGiftButton.png';
+            giveGiftImage.attr("src", chrome.extension.getURL(giveGiftButtonImage));
+            giveGiftButton.append(giveGiftImage);
+            giveGiftButton.click(function() {
+                
+                $("<div title='What would you like to do?' />").dialog({
+                    buttons: {
+                        "Add life": function() {
+                            sendGift("LIFE");
+                        },
+                        "Add spin": function() {
+                            sendGift("EXTRA_SHOT");
+                        }
+                    }
+                });
+            });
 
-            getUserID();
+            hackButtonContainer.append(hackButton);
+            hackButtonContainer.append(giveGiftButton);
+
+            achievementButton.hide();
+            volumeButton.hide();
+
+            getUserIDs();
         }
         else{
             setUp();
@@ -59,7 +82,6 @@ function verifyLicense(callback) {
         // check license status and cache it
 
         chrome.runtime.sendMessage({"verifyLicense": true}, function(licenseStatus) {
-            
             console.log("Trivia Cracker license: " + licenseStatus);
             
             if(licenseStatus) {
@@ -85,6 +107,23 @@ function verifyLicense(callback) {
             }
         });
     }
+}
+
+function sendGift(giftType) {
+    // valid giftType values are "LIFE" and "EXTRA_SHOT"
+
+    verifyLicense(function() {
+        
+        var messageData = {
+            sendGift: true,
+            targetFacebookId: facebookID,
+            giftType: giftType
+        }
+
+        chrome.runtime.sendMessage(messageData, function() {
+            window.location.reload();
+        });
+    })
 }
 
 function findAnswer() {
@@ -159,7 +198,7 @@ function clickCorrectAnswer(correctAnswer) {
     });
 }
 
-function getUserID() {
+function getUserIDs() {
     var request = window.indexedDB.open("localforage", 1);
 
     request.onerror = function(event) {
@@ -179,6 +218,10 @@ function getUserID() {
         
         request.onsuccess = function(event) {
             userID = request.result.id;
+
+            TriviaCrack.GetUserData(userID, new Date().getTime(), function(err, response) {
+                facebookID = response.response.facebook_id;
+            });
         };
     };
 }
