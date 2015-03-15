@@ -31,14 +31,31 @@ function setUp() {
             giveGiftButton.click(function() {
                 
                 $("<div title='What would you like to do?' />").dialog({
+                    width: 600,
+
                     buttons: {
-                        "Add life": function() {
+                        "Add Life": function() {
                             sendGift("LIFE");
+                            $(this).dialog("close");
                         },
-                        "Add spin": function() {
+                        "Add Spin": function() {
                             sendGift("EXTRA_SHOT");
+                            $(this).dialog("close");
+                        },
+                        "Get For Android": function() {
+                            showOtherCheats();
+                            $(this).dialog("close");
+                        },
+                        "More Cheats": function() {
+                            showOtherCheats();
+                            $(this).dialog("close");
+                        },
+                        "Help": function() {
+                            window.open("https://apptastic.uservoice.com/knowledgebase/topics/74850-trivia-cracker");
+                            $(this).dialog("close");
                         }
                     }
+
                 });
             });
 
@@ -49,6 +66,8 @@ function setUp() {
             volumeButton.hide();
 
             getUserIDs();
+
+            askUserToReview();
         }
         else{
             setUp();
@@ -72,6 +91,7 @@ function verifyLicense(callback) {
         console.log("Cached until: " + cachedLicenseCachedUntilTime);
 
         if(cachedLicenseStatus == "FULL" || cachedLicenseStatus == "FREE_TRIAL") {
+            incrementPaidUses();
             callback(cachedLicenseStatus);
         }
         else {
@@ -91,6 +111,7 @@ function verifyLicense(callback) {
                     // cache for 30 minutes
                     cachedLicenseCachedUntilTime = new Date(now.getTime() + 1000*60*30);
                     
+                    incrementPaidUses();
                     callback(licenseStatus);
                 }
                 else {
@@ -124,6 +145,58 @@ function sendGift(giftType) {
             window.location.reload();
         });
     })
+}
+
+function showOtherCheats() {
+    $("<div title='More from Apptastic!'>Looking to cheat at other popular games? Check out our other hacks to get a leg up on the competition!</div>").dialog({
+        width: 460,
+
+        buttons: {
+            "Trivia Crack (Facebook)": function() {
+                window.open("https://chrome.google.com/webstore/detail/trivia-cracker/mpaoffaaolfohpleklnbmhbndphfgeef");
+                $(this).dialog("close");
+            },
+            "Trivia Crack (Android)": function() {
+                window.open("");
+                $(this).dialog("close");
+            }
+        }
+    });
+}
+
+function askUserToReview() {
+    if(localStorage.paidUses && parseInt(localStorage.paidUses) >= 20 && !localStorage.dontAskUserToReview) {
+        
+        $("<div title='How are we doing?'>Hey there! If you're enjoying Trivia Cracker, would you mind posting a quick review?</div>").dialog({
+            width: 460,
+
+            buttons: {
+                "Sure": function() {
+                    window.open("https://chrome.google.com/webstore/detail/trivia-cracker/mpaoffaaolfohpleklnbmhbndphfgeef/reviews");
+                    localStorage.setItem("dontAskUserToReview", "true");
+                    $(this).dialog("close");
+                },
+                "Maybe later": function() {
+                    $(this).dialog("close");
+                },
+                "No thanks": function() {
+                    localStorage.setItem("dontAskUserToReview", "true");
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+    }
+}
+
+function incrementPaidUses() {
+    var paidUses = 1;
+
+    if(localStorage.paidUses) {
+        paidUses = parseInt(localStorage.paidUses) + 1;
+    }
+
+    localStorage.setItem("paidUses", ("" + paidUses));
 }
 
 function findAnswer() {
