@@ -31,7 +31,7 @@ function setUp() {
             giveGiftButton.click(function() {
                 
                 $("<div title='What would you like to do?' />").dialog({
-                    width: 600,
+                    width: 500,
 
                     buttons: {
                         "Add Life": function() {
@@ -46,10 +46,10 @@ function setUp() {
                             showOtherCheats();
                             $(this).dialog("close");
                         },
-                        "More Cheats": function() {
-                            showOtherCheats();
-                            $(this).dialog("close");
-                        },
+                        //"More Cheats": function() {
+                        //    showOtherCheats();
+                        //    $(this).dialog("close");
+                        //},
                         "Help": function() {
                             window.open("https://apptastic.uservoice.com/knowledgebase/topics/74850-trivia-cracker");
                             $(this).dialog("close");
@@ -157,7 +157,7 @@ function showOtherCheats() {
                 $(this).dialog("close");
             },
             "Trivia Crack (Android)": function() {
-                window.open("");
+                window.open("https://play.google.com/store/apps/details?id=com.apptastic.triviacracker");
                 $(this).dialog("close");
             }
         }
