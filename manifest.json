@@ -1,7 +1,7 @@
 {
     "name":"Trivia Cracker",
-    "version":"1.7",
-    "description":"Hack Trivia Crack. Use Trivia Cracker to get infinite lives and spins, and to have the correct answer selected for you.",
+    "version":"1.8",
+    "description":"Hack Trivia Crack. Use Trivia Cracker to get infinite lives and spins, and to have the correct answer selected for you when you're stumped!",
     "manifest_version": 2,
     "incognito": "spanning",
     "icons": { 
@@ -15,11 +15,12 @@
             "*://*.preguntados.com/*"
         ],
         "js": ["jquery-1.11.1.min.js", "jqueryUI/jquery-ui-1.11.2/jquery-ui.min.js", "TriviaCrack.js", "triviaCracker.js"],
-        "css": ["jqueryUI/jquery-ui-1.11.2/jquery-ui.min.css"],
+        "css": ["jqueryUI/jquery-ui-1.11.2/jquery-ui-custom.css"],
         "run_at":"document_start"
     }],
     "web_accessible_resources": [
-        "images/app/*"
+        "images/app/*",
+        "jqueryUI/jquery-ui-1.11.2/images/*"
     ],
     "page_action":{
         "default_title": "Trivia Cracker"
