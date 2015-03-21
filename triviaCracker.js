@@ -157,7 +157,7 @@ function showOtherCheats() {
                 $(this).dialog("close");
             },
             "Trivia Crack (Android)": function() {
-                window.open("https://play.google.com/store/apps/details?id=com.apptastic.triviacracker");
+                window.open("https://play.google.com/store/apps/details?id=com.apptastic.cheatsfortriviacrack");
                 $(this).dialog("close");
             }
         }
