@@ -1,7 +1,7 @@
 TriviaCracker
 =============
 
-A Chrome extension to automatically find the correct answer for you, and to give you unlimitied lives and spins, while playing Trivia Crack on Facebook (https://apps.facebook.com/triviacrack/) or on an Android device. Note the source code in this repository is only for the Facebook version.
+A Chrome extension to automatically find the correct answer for you, and to give you unlimitied lives and spins, while playing Trivia Crack on Facebook (https://apps.facebook.com/triviacrack/).
 
 Download it here for Facebook: https://chrome.google.com/webstore/detail/trivia-cracker/mpaoffaaolfohpleklnbmhbndphfgeef
 
