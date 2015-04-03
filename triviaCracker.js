@@ -42,14 +42,14 @@ function setUp() {
                             sendGift("EXTRA_SHOT");
                             $(this).dialog("close");
                         },
-                        "Get For Android": function() {
-                            showOtherCheats();
-                            $(this).dialog("close");
-                        },
-                        //"More Cheats": function() {
+                        //"Get For Android": function() {
                         //    showOtherCheats();
                         //    $(this).dialog("close");
                         //},
+                        "More Cheats": function() {
+                            showOtherCheats();
+                            $(this).dialog("close");
+                        },
                         "Help": function() {
                             window.open("https://apptastic.uservoice.com/knowledgebase/topics/74850-trivia-cracker");
                             $(this).dialog("close");
@@ -152,14 +152,18 @@ function showOtherCheats() {
         width: 460,
 
         buttons: {
+            "Candy Crush (Facebook)": function() {
+                window.open("https://chrome.google.com/webstore/detail/candy-crush-cracker/bgennlofmbkobjldjlnijimhiohpahop");
+                $(this).dialog("close");
+            },
             "Trivia Crack (Facebook)": function() {
                 window.open("https://chrome.google.com/webstore/detail/trivia-cracker/mpaoffaaolfohpleklnbmhbndphfgeef");
                 $(this).dialog("close");
-            },
-            "Trivia Crack (Android)": function() {
-                window.open("https://play.google.com/store/apps/details?id=com.apptastic.cheatsfortriviacrack");
-                $(this).dialog("close");
             }
+            //"Trivia Crack (Android)": function() {
+            //    window.open("https://play.google.com/store/apps/details?id=com.apptastic.cheatsfortriviacrack");
+            //    $(this).dialog("close");
+            //}
         }
     });
 }

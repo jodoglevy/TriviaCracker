@@ -1,6 +1,6 @@
 {
     "name":"Trivia Cracker",
-    "version":"1.9",
+    "version":"1.11",
     "description":"Hack Trivia Crack. Trivia Cracker gives you infinite lives and spins, and selects the correct answer for you when you're stumped!",
     "manifest_version": 2,
     "incognito": "spanning",
