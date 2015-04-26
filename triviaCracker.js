@@ -153,7 +153,7 @@ function showOtherCheats() {
 
         buttons: {
             "Candy Crush (Facebook)": function() {
-                window.open("https://chrome.google.com/webstore/detail/candy-crush-cracker/bgennlofmbkobjldjlnijimhiohpahop");
+                window.open("https://github.com/jodoglevy/CandyCrushCracker");
                 $(this).dialog("close");
             },
             "Trivia Crack (Facebook)": function() {
@@ -298,13 +298,16 @@ function getUserIDs() {
 
             TriviaCrack.GetUserData(userID, new Date().getTime(), function(err, response) {
                 var username = response.response.username;
+                facebookID = response.response.facebook_id;
 
-                $.ajax({
-                    url: "https://graph.facebook.com/" + username
-                })
-                .done(function(graphResponse) {
-                    facebookID = graphResponse.id;
-                });
+                if((!facebookID) || (facebookID.length == 0)) {
+                    $.ajax({
+                        url: "https://graph.facebook.com/" + username
+                    })
+                    .done(function(graphResponse) {
+                        facebookID = graphResponse.id;
+                    });
+                }
             });
         };
     };
