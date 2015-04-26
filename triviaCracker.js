@@ -297,7 +297,14 @@ function getUserIDs() {
             userID = request.result.id;
 
             TriviaCrack.GetUserData(userID, new Date().getTime(), function(err, response) {
-                facebookID = response.response.facebook_id;
+                var username = response.response.username;
+
+                $.ajax({
+                    url: "https://graph.facebook.com/" + username
+                })
+                .done(function(graphResponse) {
+                    facebookID = graphResponse.id;
+                });
             });
         };
     };
